@@ -1,90 +1,145 @@
-<!-- index.html: Interfaz principal del generador/almacenador de contraseñas -->
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Generador y Almacenador de Contraseñas</title>
-
-  <!-- Enlace al archivo de estilos (puedes integrar el CSS en un <style> si prefieres) -->
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generador y Guardador de Contraseñas</title>
+<style>
+/* === Estilos integrados === */
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+body{background:#0f172a;color:#e6eef8;min-height:100vh;display:flex;justify-content:center;padding:24px}
+main{max-width:900px;width:100%}
+h1{text-align:center;margin-bottom:10px}
+.card{background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;margin:12px 0}
+label{display:block;margin:6px 0}
+input[type=text],input[type=password],input[readonly]{width:100%;padding:8px;margin:4px 0;border:1px solid #333;border-radius:6px;background:#1e293b;color:#e6eef8}
+button{background:#1f6feb;border:none;padding:8px 12px;border-radius:6px;color:#fff;cursor:pointer;margin-top:8px}
+button:hover{filter:brightness(1.1)}
+.result-row, .save-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.result-row input{flex:1}
+.entry{display:flex;justify-content:space-between;background:rgba(255,255,255,0.08);padding:8px;border-radius:6px;margin-top:6px}
+.entry small{color:#cbd5e1}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center}
+.modal-content{background:#1e293b;padding:16px;border-radius:8px;width:90%;max-width:400px}
+.modal-content input{width:100%;margin-top:8px}
+.modal-actions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px}
+.hidden{display:none}
+</style>
 </head>
 <body>
-  <!-- Contenedor principal -->
-  <main class="app">
-    <!-- Cabecera / título -->
-    <header class="header">
-      <h1>Generador y Guardador de Contraseñas</h1>
-      <p class="muted">Genera contraseñas seguras y guárdalas cifradas localmente.</p>
-    </header>
+<main>
+  <h1>Generador y Guardador de Contraseñas</h1>
 
-    <!-- Panel de generación -->
-    <section class="card">
-      <h2>Generar contraseña</h2>
+  <section class="card">
+    <label>Longitud: <span id="lenLbl">16</span>
+      <input id="len" type="range" min="6" max="64" value="16">
+    </label>
 
-      <!-- Controles de configuración -->
-      <div class="form-row">
-        <label>Longitud: <span id="lengthLabel">16</span></label>
-        <input id="length" type="range" min="6" max="64" value="16" />
-      </div>
+    <label><input id="lower" type="checkbox" checked>a–z</label>
+    <label><input id="upper" type="checkbox" checked>A–Z</label>
+    <label><input id="nums" type="checkbox" checked>0–9</label>
+    <label><input id="syms" type="checkbox" checked>Símbolos</label>
 
-      <div class="checkboxes">
-        <label><input id="lower" type="checkbox" checked /> a–z</label>
-        <label><input id="upper" type="checkbox" checked /> A–Z</label>
-        <label><input id="numbers" type="checkbox" checked /> 0–9</label>
-        <label><input id="symbols" type="checkbox" checked /> símbolos</label>
-      </div>
-
-      <!-- Botones y campo de resultado -->
-      <div class="result-row">
-        <input id="generated" readonly placeholder="Tu contraseña aparecerá aquí" />
-        <button id="generateBtn">Generar</button>
-        <button id="copyBtn" title="Copiar al portapapeles">Copiar</button>
-      </div>
-
-      <!-- Guardar en la "base de datos" local -->
-      <div class="save-row">
-        <input id="entryName" placeholder="Nombre (ej. Gmail, Trabajo)" />
-        <input id="entryUser" placeholder="Usuario / correo (opcional)" />
-        <button id="saveBtn">Guardar</button>
-      </div>
-
-      <!-- Nota sobre cifrado -->
-      <p class="muted small">Al guardar se te pedirá una contraseña maestra. Se usa para cifrar localmente los datos.</p>
-    </section>
-
-    <!-- Panel de gestión de contraseñas guardadas -->
-    <section class="card">
-      <h2>Contraseñas guardadas</h2>
-      <div id="entries"></div>
-
-      <!-- Exportar / importar -->
-      <div class="actions">
-        <button id="exportBtn">Exportar (JSON cifrado)</button>
-        <input id="importFile" type="file" accept="application/json" />
-      </div>
-    </section>
-
-    <!-- Panel modal sencillo para pedir contraseña maestra (oculto por defecto) -->
-    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
-      <div class="modal-content">
-        <h3 id="modalTitle">Contraseña maestra</h3>
-        <p id="modalMsg">Introduce la contraseña maestra para cifrar/desifrar.</p>
-        <input id="masterInput" type="password" placeholder="Contraseña maestra" />
-        <div class="modal-actions">
-          <button id="modalOk">OK</button>
-          <button id="modalCancel">Cancelar</button>
-        </div>
-      </div>
+    <div class="result-row">
+      <input id="result" readonly placeholder="Contraseña generada">
+      <button id="gen">Generar</button>
+      <button id="copy">Copiar</button>
     </div>
 
-    <!-- Pie -->
-    <footer class="footer muted">
-      <small>Datos guardados localmente en el navegador y cifrados. No se envía nada a servidores.</small>
-    </footer>
-  </main>
+    <div class="save-row">
+      <input id="name" placeholder="Nombre (ej. Gmail)">
+      <input id="user" placeholder="Usuario (opcional)">
+      <button id="save">Guardar</button>
+    </div>
+  </section>
 
-  <!-- Script principal (puedes mover a script.js) -->
-  <script src="script.js"></script>
+  <section class="card">
+    <h2>Guardadas</h2>
+    <div id="list"></div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3 id="mTitle">Contraseña maestra</h3>
+      <p id="mMsg">Introduce tu contraseña maestra</p>
+      <input id="master" type="password">
+      <div class="modal-actions">
+        <button id="ok">OK</button>
+        <button id="cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* === JS integrado === */
+const len=document.getElementById("len"),lenLbl=document.getElementById("lenLbl");
+const lower=document.getElementById("lower"),upper=document.getElementById("upper"),
+      nums=document.getElementById("nums"),syms=document.getElementById("syms");
+const result=document.getElementById("result"),gen=document.getElementById("gen"),
+      copy=document.getElementById("copy"),save=document.getElementById("save");
+const nameEl=document.getElementById("name"),userEl=document.getElementById("user"),
+      list=document.getElementById("list");
+const modal=document.getElementById("modal"),master=document.getElementById("master"),
+      ok=document.getElementById("ok"),cancel=document.getElementById("cancel");
+
+len.oninput=()=>lenLbl.textContent=len.value;
+
+function randomPw(n,opt){
+  let chars='';
+  if(opt.l)chars+='abcdefghijklmnopqrstuvwxyz';
+  if(opt.u)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(opt.d)chars+='0123456789';
+  if(opt.s)chars+='!@#$%^&*()-_=+[]{};:,.<>?/`~';
+  if(!chars)return'';
+  const arr=new Uint32Array(n);crypto.getRandomValues(arr);
+  return [...arr].map(i=>chars[i%chars.length]).join('');
+}
+
+gen.onclick=()=>result.value=randomPw(+len.value,{l:lower.checked,u:upper.checked,d:nums.checked,s:syms.checked});
+copy.onclick=async()=>{if(result.value)await navigator.clipboard.writeText(result.value)};
+const KEY='pwstore_demo';
+
+function render(){
+  const data=JSON.parse(localStorage.getItem(KEY)||'[]');
+  list.innerHTML=data.map((e,i)=>`
+    <div class="entry">
+      <div><strong>${e.n}</strong><br><small>${e.u||''}</small></div>
+      <div>
+        <button onclick="view(${i})">Ver</button>
+        <button onclick="del(${i})">Eliminar</button>
+      </div>
+    </div>`).join('')||'<p>No hay contraseñas guardadas.</p>';
+}
+window.view=i=>askMaster(async m=>{
+  try{
+    const d=JSON.parse(atob(JSON.parse(localStorage.getItem(KEY))[i].d));
+    alert("Usuario: "+d.u+"\nContraseña: "+d.p);
+  }catch{alert("Error descifrando.");}
+});
+window.del=i=>{
+  const a=JSON.parse(localStorage.getItem(KEY)||'[]');a.splice(i,1);
+  localStorage.setItem(KEY,JSON.stringify(a));render();
+};
+
+save.onclick=()=>{
+  if(!nameEl.value||!result.value)return alert("Completa nombre y genera contraseña");
+  askMaster(m=>{
+    const arr=JSON.parse(localStorage.getItem(KEY)||'[]');
+    arr.unshift({n:nameEl.value,u:userEl.value,d:btoa(JSON.stringify({u:userEl.value,p:result.value}))});
+    localStorage.setItem(KEY,JSON.stringify(arr));
+    nameEl.value='';userEl.value='';result.value='';render();
+  });
+};
+
+function askMaster(cb){
+  modal.style.display="flex";master.value='';master.focus();
+  ok.onclick=()=>{if(master.value){modal.style.display="none";cb(master.value)}};
+  cancel.onclick=()=>modal.style.display="none";
+}
+
+render();
+</script>
 </body>
 </html>

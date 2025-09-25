@@ -1,9 +1,7 @@
-/* styles.css: estilos sencillos y responsivos */
 
-/* Reseteo mínimo */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Roboto, Arial, sans-serif; }
 
-body {
+.body {
   background: #0f172a; /* azul oscuro */
   color: #e6eef8;      /* texto claro */
   min-height: 100vh;
