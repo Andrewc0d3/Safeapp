@@ -1,12 +1,90 @@
-<html lang="en">
+<!-- index.html: Interfaz principal del generador/almacenador de contraseñas -->
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generador y Almacenador de Contraseñas</title>
+
+  <!-- Enlace al archivo de estilos (puedes integrar el CSS en un <style> si prefieres) -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h2>bana sos el chavo</h2>
-    <script src="script.js"></script>
+  <!-- Contenedor principal -->
+  <main class="app">
+    <!-- Cabecera / título -->
+    <header class="header">
+      <h1>Generador y Guardador de Contraseñas</h1>
+      <p class="muted">Genera contraseñas seguras y guárdalas cifradas localmente.</p>
+    </header>
+
+    <!-- Panel de generación -->
+    <section class="card">
+      <h2>Generar contraseña</h2>
+
+      <!-- Controles de configuración -->
+      <div class="form-row">
+        <label>Longitud: <span id="lengthLabel">16</span></label>
+        <input id="length" type="range" min="6" max="64" value="16" />
+      </div>
+
+      <div class="checkboxes">
+        <label><input id="lower" type="checkbox" checked /> a–z</label>
+        <label><input id="upper" type="checkbox" checked /> A–Z</label>
+        <label><input id="numbers" type="checkbox" checked /> 0–9</label>
+        <label><input id="symbols" type="checkbox" checked /> símbolos</label>
+      </div>
+
+      <!-- Botones y campo de resultado -->
+      <div class="result-row">
+        <input id="generated" readonly placeholder="Tu contraseña aparecerá aquí" />
+        <button id="generateBtn">Generar</button>
+        <button id="copyBtn" title="Copiar al portapapeles">Copiar</button>
+      </div>
+
+      <!-- Guardar en la "base de datos" local -->
+      <div class="save-row">
+        <input id="entryName" placeholder="Nombre (ej. Gmail, Trabajo)" />
+        <input id="entryUser" placeholder="Usuario / correo (opcional)" />
+        <button id="saveBtn">Guardar</button>
+      </div>
+
+      <!-- Nota sobre cifrado -->
+      <p class="muted small">Al guardar se te pedirá una contraseña maestra. Se usa para cifrar localmente los datos.</p>
+    </section>
+
+    <!-- Panel de gestión de contraseñas guardadas -->
+    <section class="card">
+      <h2>Contraseñas guardadas</h2>
+      <div id="entries"></div>
+
+      <!-- Exportar / importar -->
+      <div class="actions">
+        <button id="exportBtn">Exportar (JSON cifrado)</button>
+        <input id="importFile" type="file" accept="application/json" />
+      </div>
+    </section>
+
+    <!-- Panel modal sencillo para pedir contraseña maestra (oculto por defecto) -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <h3 id="modalTitle">Contraseña maestra</h3>
+        <p id="modalMsg">Introduce la contraseña maestra para cifrar/desifrar.</p>
+        <input id="masterInput" type="password" placeholder="Contraseña maestra" />
+        <div class="modal-actions">
+          <button id="modalOk">OK</button>
+          <button id="modalCancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie -->
+    <footer class="footer muted">
+      <small>Datos guardados localmente en el navegador y cifrados. No se envía nada a servidores.</small>
+    </footer>
+  </main>
+
+  <!-- Script principal (puedes mover a script.js) -->
+  <script src="script.js"></script>
 </body>
 </html>
