@@ -1,94 +1,79 @@
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Roboto, Arial, sans-serif; }
+/* styles.css: estilos simples para la app de contraseñas */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-.body {
-  background: #0f172a; /* azul oscuro */
-  color: #e6eef8;      /* texto claro */
-  min-height: 100vh;
+body {
+  background: #f0f4f8;
+  color: #333;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 20px;
 }
 
-/* Contenedor central */
-.app {
+.container {
   width: 100%;
-  max-width: 920px;
+  max-width: 500px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Tarjetas */
-.card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
-  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-  border: 1px solid rgba(255,255,255,0.03);
+h1, h2 {
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-/* Cabecera */
-.header { text-align: center; margin-bottom: 8px; }
-.header h1 { font-size: 1.6rem; margin-bottom: 4px; }
-.muted { color: #9fb0c8; }
-.small { font-size: 0.85rem; }
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
 
-/* Form rows */
-.form-row { display:flex; align-items:center; gap:12px; margin:8px 0; }
-.form-row input[type="range"] { flex: 1; }
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
 
-/* Checkboxes */
-.checkboxes { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0; }
-.checkboxes label { display:flex; gap:6px; align-items:center; font-size:0.95rem; }
-
-/* Result and buttons */
-.result-row { display:flex; gap:8px; margin-top:12px; }
-.result-row input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:inherit; }
 button {
-  background: linear-gradient(180deg,#1f6feb,#265fda);
-  border:none;
-  color:white;
-  padding:10px 12px;
-  border-radius:8px;
-  cursor:pointer;
-  min-width:86px;
+  padding: 10px;
+  border: none;
+  background: #1f6feb;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
-button:hover { filter:brightness(1.05); }
 
-/* Save row */
-.save-row { display:flex; gap:8px; margin-top:12px; }
-.save-row input { padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:inherit; flex:1; }
-
-/* Entries list */
-#entries { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
-.entry {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px;
-  border-radius:8px;
-  background: rgba(255,255,255,0.015);
-  border:1px solid rgba(255,255,255,0.02);
+button:hover {
+  background: #1559c1;
 }
-.entry .left { display:flex; gap:12px; align-items:center; }
-.entry .meta { font-size:0.95rem; color:#cfe7ff; }
-.entry .actions { display:flex; gap:8px; }
 
-/* Footer */
-.footer { text-align:center; margin-top:8px; }
-
-/* Modal */
-.modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); }
-.modal.hidden { display:none; }
-.modal-content {
-  background:#071024;
-  padding:16px;
-  border-radius:12px;
-  width:90%;
-  max-width:420px;
-  border:1px solid rgba(255,255,255,0.03);
+.password-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
 }
-.modal-content input { width:100%; padding:10px; border-radius:8px; margin-top:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:inherit; }
-.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
-.actions { display:flex; gap:8px; align-items:center; margin-top:8px; }
-#importFile { color: #9fb0c8; }
+
+.password-item span {
+  flex: 1;
+}
+
+.password-item button {
+  margin-left: 8px;
+  background: #e11d48;
+}
+
+.password-item button:hover {
+  background: #c8103b;
+}
